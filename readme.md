@@ -16,6 +16,6 @@ Firma Mars Express se zabývá, jak již název napovídá, expresním doručen�
 ![Konceptualni schema](/diagram.png)
 
 ## Relacni schema
-![Relacni schema](/relation_schema.png)
+![Relacni schema](/relational_schema.png)
 
 Queries are in the folder.
