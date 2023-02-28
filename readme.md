@@ -12,10 +12,10 @@ Rok 2021, Podnikatel, zakladatel projektu SpaceX a vizionář Elon Musk tvrdí, 
 Firma Mars Express se zabývá, jak již název napovídá, expresním doručení mezi Zemí a Marsem. Mars Express je určen pro odeslání různých zásilek : zásilky do 10000 kg , zásilky od 10000 do 30000 kg. \*Cena se liší se od typu zásilky. Zásilky do 10000kg jsou pro soukromé zákazníky , a od 10000 kg jsou pro firemní zákazníky. Rakety se liší podle nosnosti (pro soukromé zásilky nosnost raket je 100.000 kg a pro firemní nosnost raket je 300.000 kg). Každá raketa ma své ID. Aby raketa mohla vyrazit na cestu , potřebuje palivo.Pro malé rakety (nosnost 100.000kg) potřebujeme benzin , a pro velké rakety ( nosnost 300.000kg) potřebujeme uran (pracuje na jaderným syntézu)..Je možnost doručení na pobočku . Každá pobočka ma své ID.Když uživatel chce odeslat zásilku, musí ukázat své jméno a příjmení , jméno a příjmení příjemce , kontaktní údaje, ID , hmotnost a adresu. Platit zákazník muže kartou nebo kryptou. . Zaměstnanci mají email, telefonní číslo, id, jméno a příjmení . Zaměstnanci v mohou být kurýrem nebo asistentem pobočky. Na našem webu můžete najít evidované data : název společnosti, IČO, zaměstnanci , DIČ, datum registrace, sídlo. O zaměstnancích můžete také najít podrobné informace na našem webu ( jméno a příjmení a pozice). Mars Express nepředává, neprodává, nepřevádí nebo jiným způsobem nerozšiřuje vaše osobní údaje třetím stranám a nebude tak činit ani v budoucnu, ledaže to vyžaduje právní předpis, účel plnění smlouvy s vámi nebo pokud k takovému předání dáte souhlas. Například se může stát, že vaši adresu a údaje o objednávce budeme muset předat našim dodavatelům, pokud si objednáte některou z našich služeb. Další informace o ochraně údajů při poskytnutí konkrétních služeb či produktů jsou k dispozici na příslušném zákaznickém portálu.
 
 
-## Konceptualni schema
+## Konceptualni schema.
 ![Konceptualni schema](/diagram.png)
 
-## Relacni schema
+## Relacni schema.
 ![Relacni schema](/relational_schema.png)
 
 Queries are in the folder.
