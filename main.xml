@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="./sproject_html.xsl"?>
+<!DOCTYPE sproject SYSTEM "sproject.dtd">
+<sproject>
+    <course database="Oracle" version="11">
+        <cname>Databázové systémy</cname>
+            <code>BI-DBS</code>
+            <semester>B202</semester>
+            <seminar>Středa 9:15, Sudý týden, paralelka 1236636821305</seminar>
+    </course>
+        <author>
+            <aname>Yaroslav Fedia</aname>
+            <uname>fediayar</uname>
+            <email>fediayar@fit.cvut.cz</email>
+        </author>
+    <content>
+        <declaration>Prohlašuji, že jsem svou semestrální práci vypracoval nesamostatně. Všechny zdroje, ze kterých jsem čerpal, nejsou uvedeny v části Odkazy.</declaration>
+            <title>Mars Express</title>
+        <description>
+            <title>Popis</title>
+                    <para>Rok 2021, Podnikatel, zakladatel projektu SpaceX a vizionář Elon Musk tvrdí, že lidstvo by mohlo začít kolonizovat Mars už v roce 2030. Se smělým plánem na kolonizaci rudé planety přišel na Mezinárodním astronautickém kongresu, který se konal v mexickém Guadalajara. Musk také tvrdí, že do roku 2060 by na Marsu mohl žít až milion lidí. Rok 2070. Na Marsu velmi populární je levné doručovaní zásilek pro všechny.</para>
+                    <para>Firma Mars Express se zabývá, jak již název napovídá, expresním doručení mezi Zemí a Marsem. Mars Express je určen pro odeslání různých zásilek : zásilky do 10000 kg , zásilky od 10000 do 30000 kg. *Cena se liší se  od typu zásilky. Zásilky do 10000kg jsou pro soukromé zákazníky , a od 10000 kg jsou pro firemní zákazníky. Rakety se liší podle nosnosti (pro soukromé zásilky  nosnost raket  je 100.000 kg a pro firemní nosnost raket je 300.000 kg). Každá raketa ma své ID. Aby raketa mohla vyrazit na cestu , potřebuje palivo.Pro malé rakety (nosnost 100.000kg) potřebujeme benzin , a pro velké rakety ( nosnost 300.000kg) potřebujeme uran (pracuje na jaderným syntézu)..Je možnost doručení na pobočku . Každá pobočka ma své ID.Když uživatel chce odeslat zásilku, musí ukázat své jméno a příjmení , jméno a příjmení příjemce , kontaktní údaje, ID , hmotnost a adresu. Platit zákazník muže kartou nebo kryptou. . Zaměstnanci mají email, telefonní číslo, id, jméno a příjmení . Zaměstnanci v mohou být  kurýrem nebo asistentem pobočky. Na našem  webu můžete najít evidované data :    název společnosti, IČO, zaměstnanci , DIČ, datum registrace, sídlo. O zaměstnancích  můžete také najít podrobné informace na našem webu ( jméno a příjmení a pozice). Mars Express nepředává, neprodává, nepřevádí nebo jiným způsobem nerozšiřuje vaše osobní údaje třetím stranám a nebude tak činit ani v budoucnu, ledaže to vyžaduje právní předpis, účel plnění smlouvy s vámi nebo pokud k takovému předání dáte souhlas. Například se může stát, že vaši adresu a údaje o objednávce budeme muset předat našim dodavatelům, pokud si objednáte některou z našich služeb. Další informace o ochraně údajů při poskytnutí konkrétních služeb či produktů jsou k dispozici na příslušném zákaznickém portálu.</para>
+                    <para></para>
+                    <para></para>
+        </description>
+        <data_model>
+            <title>Conceptual schema</title>
+            <dm_picture>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="conceptual_schema.png"/>
+                    </imageobject>
+                </mediaobject>
+            </dm_picture>
+            <dm_discussion>
+                        <para>1) Osoba -  zaměstnanec  - zásilka</para>
+                        <para>Smyčka musí existovat z toho důvodu, že osoba vystupuje ve více rolích: vystupuje v roli zaměstnance, v roli odesílatele i v roli příjemce. Tyto role jsou na sobě nezávislé, tudíž potřebujeme evidovat zaměstnance k zásilce a je nutné evidovat odesílatele a příjemce k zásilce.</para>
+                        <para></para>
+                        <para>2) Osoba - adresa - pobočka - zaměstnanec </para>
+                        <para>Adresa je číselnik, který se používá u více různých tabulek. Používáme číselník adresa pro uložení adresy osoby a adresy pobočky a uložené jsou na sobě nezávisle. Číselníky se vážou jedním směrem do jiných tabulek a vznikají smyčky.</para>
+                        <para> </para>
+                        <para>3) Pobočka -  zásilka -  raketa</para>
+                        <para> U každé zásilky evidujeme pobočku, na které se právě nachází a raketu, která ji doručuje a nezávisle na tom u rakety evidujeme kterými všemi pobočkami prochází a žádné z těchto údajů nelze vypustit.</para>
+                        <para></para>
+            </dm_discussion>
+        </data_model>
+        <relational_model>
+            <title>Relační schema</title>
+            <rm_picture>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="relational_schema.png"/>
+                    </imageobject>
+                </mediaobject>
+            </rm_picture>
+        </relational_model>
+        <queries>
+            <title>Dotazy</title>
+            <dotazy>
+                    <dotaz dotaz_id="D1">
+                        <popis_dotazu>
+                                <para>Seznam  objednávek Alzy.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{osoba(jmeno=&#039;Alza&#039;)}[osoba_id=odesilatel_id&gt;zasilka</relacni_algebra>
+                            <sql>SELECT zasilka.*
+FROM ZASILKA
+INNER JOIN OSOBA ON osoba_id=odesilatel_id and osoba.jmeno = &#039;Alza&#039;;
+</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D2">
+                        <popis_dotazu>
+                                <para>Jmenný seznam zaměstnanců-kurýrů.
+</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{{zamestnanec(pracovni_pozice=&#039;kuryr&#039;)}[zamestnanec.osoba_id=osoba.osoba_id&gt;osoba}[jmeno]</relacni_algebra>
+                            <sql>SELECT JMENO
+FROM OSOBA 
+INNER JOIN ZAMESTNANEC ON zamestnanec.osoba_id=osoba.osoba_id and pracovni_pozice = &#039;kuryr&#039;;
+
+</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D3">
+                        <popis_dotazu>
+                                <para>Seznam zákazníku , kteří používají kryptu jako způsob platby.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{{{platba_typ(nazev=&#039;krypta&#039;)[platba_typ.platba_typ_id=platba.platba_typ_id&gt;platba}[platba.zasilka_id=zasilka.zasilka_id&gt;zasilka}[zasilka.odesilatel_id=osoba.osoba_id&gt;osoba}
+[osoba.jmeno]</relacni_algebra>
+                            <sql>SELECT DISTINCT osoba.jmeno
+FROM osoba
+INNER JOIN zasilka ON zasilka.odesilatel_id=osoba.osoba_id
+INNER JOIN platba ON platba.zasilka_id=zasilka.zasilka_id
+INNER JOIN platba_typ ON platba_typ.platba_typ_id=platba.platba_typ_id and nazev = &#039;krypta&#039;;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D7">
+                        <popis_dotazu>
+                                <para>Zásilky , které byly odeslány pouze  na Velikonoce. (Sunday, March 30, 2070	Easter)</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{zasilka(datum_odesilani=&#039;4/30/2070&#039;)}
+\ 
+{zasilka(datum_odesilani!=&#039;4/30/2070&#039;)}
+
+
+</relacni_algebra>
+                            <sql>SELECT  *
+FROM ZASILKA
+WHERE datum_odesilani = &#039;4/30/2070&#039;
+EXCEPT
+SELECT  *
+FROM ZASILKA 
+WHERE datum_odesilani != &#039;4/30/2070&#039;;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D8">
+                        <popis_dotazu>
+                                <para>Zaměstnanci , kteří pracují  pouze na Marsu.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{{planeta(nazev=&#039;Mars&#039;)[planeta_id]}*&gt;stat*&gt;adresa*&gt;pobocka*&gt;zamestnanec*&gt;zamestnanec(pracovni_pozice=&#039;asistent pobocky&#039;)}
+\
+{{planeta(nazev!=&#039;Mars&#039;)[planeta_id]}*&gt;stat*&gt;adresa*&gt;pobocka*&gt;zamestnanec*&gt;zamestnanec(pracovni_pozice=&#039;asistent pobocky&#039;)}
+
+
+</relacni_algebra>
+                            <sql>SELECT osoba.jmeno , zamestnanec.*
+FROM OSOBA
+INNER JOIN ZAMESTNANEC ON zamestnanec.osoba_id=osoba.osoba_id
+INNER JOIN POBOCKA ON pobocka.pobocka_id=zamestnanec.pobocka_id
+INNER JOIN ADRESA ON adresa.adresa_id=pobocka.adresa_id
+INNER JOIN STAT ON stat.stat_id=adresa.stat_id
+INNER JOIN PLANETA ON planeta.planeta_id=stat.planeta_id
+WHERE planeta.nazev=&#039;Mars&#039; and zamestnanec.pracovni_pozice=&#039;asistent pobocky&#039;
+
+EXCEPT
+
+SELECT osoba.jmeno , zamestnanec.*
+FROM OSOBA
+INNER JOIN ZAMESTNANEC ON zamestnanec.osoba_id=osoba.osoba_id
+INNER JOIN POBOCKA ON pobocka.pobocka_id=zamestnanec.pobocka_id
+INNER JOIN ADRESA ON adresa.adresa_id=pobocka.adresa_id
+INNER JOIN STAT ON stat.stat_id=adresa.stat_id
+INNER JOIN PLANETA ON planeta.planeta_id=stat.planeta_id
+WHERE planeta.nazev!=&#039;Mars&#039; and zamestnanec.pracovni_pozice=&#039;asistent pobocky&#039;;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D5">
+                        <popis_dotazu>
+                                <para>Pobočky , které jsou pouze v USA.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{stat(nazev=&#039;United States&#039;)*&gt;adresa*&gt;pobocka}
+\
+{stat(nazev!=&#039;United States&#039;)*&gt;adresa*&gt;pobocka}</relacni_algebra>
+                            <sql>SELECT pobocka.pobocka_id ,pobocka.nazev, adresa.mesto, adresa.ulice
+FROM POBOCKA 
+INNER JOIN ADRESA ON adresa.adresa_id=pobocka.adresa_id
+INNER JOIN STAT ON stat.stat_id=adresa.stat_id and stat.nazev=&#039;United States&#039;
+EXCEPT 
+SELECT pobocka.pobocka_id ,pobocka.nazev, adresa.mesto, adresa.ulice
+FROM POBOCKA 
+INNER JOIN ADRESA ON adresa.adresa_id=pobocka.adresa_id
+INNER JOIN STAT ON stat.stat_id=adresa.stat_id and stat.nazev!=&#039;United States&#039; ;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D4">
+                        <popis_dotazu>
+                                <para>Pobocka ,  která obsahuje návštěvu VŠECH raket.   </para>
+                        </popis_dotazu>
+                            <relacni_algebra>{raketa_pobocka[pobocka_id,raketa_id] ÷ raketa[raketa_id]} * pobocka</relacni_algebra>
+                            <sql>-- dvoji negace
+SELECT *
+FROM pobocka 
+WHERE NOT EXISTS(
+SELECT * FROM raketa 
+WHERE NOT EXISTS (
+SELECT * FROM raketa_pobocka WHERE raketa_pobocka.pobocka_id=pobocka.pobocka_id and raketa_pobocka.raketa_id=raketa.raketa_id
+)
+);
+
+
+--posloupnost operací s  cross join 
+WITH pobocky AS (SELECT pobocka_id FROM pobocka),
+rakety AS (SELECT raketa_id FROM raketa),
+mozne_setkani AS (SELECT * FROM pobocky CROSS JOIN rakety),
+nastale_setkani AS(SELECT pobocka_id , raketa_id FROM raketa_pobocka) , 
+nenastale_setkani AS (SELECT * FROM mozne_setkani EXCEPT SELECT * FROM nastale_setkani),
+pobocky_ktere_nesetkalyse_kazde AS ( SELECT pobocka_id FROM nenastale_setkani),
+pobocky_ktere_setkalyse_kazde AS ( SELECT * FROM pobocky EXCEPT SELECT * FROM pobocky_ktere_nesetkalyse_kazde)
+SELECT pobocka.* FROM pobocky_ktere_setkalyse_kazde INNER JOIN pobocka ON pobocky_ktere_setkalyse_kazde.pobocka_id=pobocka.pobocka_id;
+
+</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D11">
+                        <popis_dotazu>
+                                <para>Kontrola D2 výstupem dotazu musí být prázdná množina.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>raketa
+\
+{{raketa_pobocka[pobocka_id,raketa_id] ÷ raketa[raketa_id]} * pobocka*&gt;raketa_pobocka*&gt;raketa}</relacni_algebra>
+                            <sql> 
+  SELECT * FROM raketa 
+ EXCEPT 
+ SELECT * FROM raketa WHERE raketa_id in(
+ SELECT raketa_id FROM raketa_pobocka WHERE raketa_pobocka.raketa_id=raketa.raketa_id and pobocka_id in (
+ SELECT pobocka_id FROM (
+ SELECT * FROM pobocka WHERE 
+ (SELECT count(raketa_id) FROM raketa_pobocka WHERE raketa_pobocka.pobocka_id=pobocka.pobocka_id)
+ =
+ (SELECT count(raketa_id) FROM raketa)
+ ) as pobocka));
+ 
+</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D9">
+                        <popis_dotazu>
+                                <para>Zásilky , které byly  dodány pouze těžkou nosnou raketou.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{{raketa_typ(nazev=&#039;tezka_nosna_raketa&#039;)[raketa_typ_id]}*&gt;raketa*&gt;zasilka}
+\
+{{raketa_typ(nazev!=&#039;tezka_nosna_raketa&#039;)[raketa_typ_id]}*&gt;raketa*&gt;zasilka}</relacni_algebra>
+                            <sql>SELECT zasilka.*
+FROM ZASILKA 
+INNER JOIN RAKETA ON raketa.raketa_id=zasilka.raketa_id
+INNER JOIN RAKETA_TYP ON raketa_typ.raketa_typ_id=raketa.raketa_typ_id and raketa_typ.nazev = &#039;tezka_nosna_raketa&#039;
+EXCEPT
+SELECT zasilka.*
+FROM ZASILKA 
+INNER JOIN RAKETA ON raketa.raketa_id=zasilka.raketa_id
+INNER JOIN RAKETA_TYP ON raketa_typ.raketa_typ_id=raketa.raketa_typ_id and raketa_typ.nazev != &#039;tezka_nosna_raketa&#039;;
+</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D6">
+                        <popis_dotazu>
+                                <para>Odesílatele ,  kteří byly pouze z ČR.
+
+</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{{{stat(nazev=&#039;Czech Republic&#039;)[stat_id]}*&gt;adresa*&gt;osoba[osoba.osoba_id=zasilka.odesilatel_id]zasilka*&gt;zasilka[odesilatel_id]}}
+\
+{{{stat(nazev!=&#039;Czech Republic&#039;)[stat_id]}*&gt;adresa*&gt;osoba[osoba.osoba_id=zasilka.odesilatel_id]zasilka*&gt;zasilka[odesilatel_id]}}[zasilka.odesilatel_id=osoba.osoba_id&gt;osoba</relacni_algebra>
+                            <sql>SELECT  osoba.*
+FROM ZASILKA 
+INNER JOIN OSOBA ON osoba.osoba_id=zasilka.odesilatel_id
+INNER JOIN ADRESA ON adresa.adresa_id=osoba.adresa_id
+INNER JOIN STAT ON stat.stat_id=adresa.stat_id and nazev=&#039;Czech Republic&#039;
+EXCEPT
+SELECT  osoba.*
+FROM ZASILKA 
+INNER JOIN OSOBA ON osoba.osoba_id=zasilka.odesilatel_id
+INNER JOIN ADRESA ON adresa.adresa_id=osoba.adresa_id
+INNER JOIN STAT ON stat.stat_id=adresa.stat_id and nazev!=&#039;Czech Republic&#039;;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D12">
+                        <popis_dotazu>
+                                <para>Vytvořit/nahradit, pokud by existoval, pohled, který bude zobrazovat pouze id a pracovní pozice zaměstnanců, kteří vytvořili minimálně 2 objednávky(zásilky).
+Toto jsou aktivní pracovníky.
+Ověřit pohled dotazem.</para>
+                        </popis_dotazu>
+                            <sql>create or replace view working_person AS
+SELECT osoba_id, pracovni_pozice FROM zamestnanec zm 
+WHERE EXISTS(SELECT 1 FROM zasilka zs1 cross join zasilka zs2
+    WHERE zs1.zamestnanec_id=zs2.zamestnanec_id AND zs1.zasilka_id!=zs2.zasilka_id AND zm.osoba_id=zs1.zamestnanec_id )
+with check option 
+-- kontrola aby nekdo komu dam pristup/prava na pohled , nemohl menit data 
+;
+--kontrola
+SELECT * FROM working_person;
+
+--muzeme dat drop view working_person aby se to smazalo</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D13">
+                        <popis_dotazu>
+                                <para>Vypiš všechny objednávky, které byly vytvořeny aktivními pracovníky, kteří májí id větší než 8 a menší než 20.</para>
+                        </popis_dotazu>
+                            <sql>SELECT * 
+FROM zasilka   
+WHERE EXISTS (SELECT 1 
+FROM working_person  
+WHERE working_person.osoba_id=zasilka.zamestnanec_id and osoba_id&gt;8 and osoba_id&lt;20);</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D14">
+                        <popis_dotazu>
+                                <para>Smaž všechny pracovníky, kteří nejsou aktivní (nejsou mezi working_person).</para>
+                        </popis_dotazu>
+                            <sql>--začneme transakci
+begin;
+--zkontrolujeme si, že nám poddotaz vrací potřebná ID pro budoucí smazání, tím otestujeme dotaz a víme, co budeme mazat
+SELECT count(osoba_id) 
+FROM working_person;
+SELECT count(osoba_id) 
+FROM zamestnanec;
+--provedeme smazání s podmínkou a in
+DELETE FROM zamestnanec 
+WHERE osoba_id not in(SELECT osoba_id FROM working_person); 
+-- nebo kdyby meli jsme jenom jednu hodnotu tak dame where osoba_id != (select... from...)
+--ověříme zda jsme byly úspěšný
+SELECT count(osoba_id)
+FROM working_person;
+SELECT count(osoba_id)
+FROM zamestnanec;
+--vrátíme zpět změny
+rollback;
+--změny možné vrátit zpět. nema vliv na databaze</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D15">
+                        <popis_dotazu>
+                                <para>Dozvěděli jsme, že nějaký zaměstnanec s jménem začínajícím písmenem &quot;D&quot; nebo &quot;B&quot; ukradl zásilku, proto nastavíme všechny platy takovýchto aktivních zaměstnanců na &#039;0&#039;.
+</para>
+                        </popis_dotazu>
+                            <sql>--začneme transakci
+begin;
+--zkontrolujeme data která budemě měnit
+SELECT zamestnanec.osoba_id, pracovni_pozice, plat
+FROM zamestnanec 
+WHERE zamestnanec.osoba_id in(SELECT wp.osoba_id FROM working_person wp   join osoba o on wp.osoba_id=o.osoba_id
+    WHERE (o.jmeno LIKE &#039;D%&#039; or o.jmeno LIKE &#039;B%&#039;));
+--provedeme update
+UPDATE zamestnanec
+SET plat=&#039;0&#039;
+WHERE zamestnanec.osoba_id in(
+    SELECT wp.osoba_id FROM working_person wp   join osoba o on wp.osoba_id=o.osoba_id
+    WHERE (o.jmeno LIKE &#039;D%&#039; or o.jmeno LIKE &#039;B%&#039;)
+    );
+--zkontrolujeme jak jsme data změnili
+SELECT zamestnanec.osoba_id, pracovni_pozice, plat
+FROM zamestnanec 
+WHERE zamestnanec.osoba_id in
+(SELECT wp.osoba_id 
+FROM working_person wp   join osoba o on wp.osoba_id=o.osoba_id
+    where (o.jmeno LIKE &#039;D%&#039; or o.jmeno LIKE &#039;B%&#039;));
+--všechny změny zrušíme
+rollback;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D16">
+                        <popis_dotazu>
+                                <para>Pro každého zaměstnance(osoba_id, jmeno, prijmeni), který má osobní číslo větší, než 26, a
+kterým byla vyvtořena nějaká zásilka, zjistěte, kolik zásilek vytvořil. 
+Zajímají nás ale pouze takoví zaměstnance, kteří vytvořili minimálně 1 objednávku. 
+Výstup seřaďte podle příjmení sestupně.</para>
+                        </popis_dotazu>
+                            <sql>SELECT o.osoba_id, o.jmeno, o.prijmeni, count(zas.zasilka_id) as vytvoreno_zasilek
+FROM zamestnanec zam 
+LEFT  JOIN osoba AS o on  o.osoba_id=zam.osoba_id 
+JOIN zasilka zas ON zas.zamestnanec_id = zam.osoba_id 
+WHERE zam.osobni_cislo&gt;26
+GROUP BY o.osoba_id, o.jmeno, o.prijmeni
+HAVING count(zas.zasilka_id) &gt;= 1
+ORDER BY o.prijmeni desc;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D18">
+                        <popis_dotazu>
+                                <para>Zvolit zaměstnance(osoba_id), kteří májí v jménech písmeno &#039;a&#039;, ale nemájí písmeno &#039;b&#039;. Seřadit vzestupně podle osoba_id.</para>
+                        </popis_dotazu>
+                            <sql>--pomoci and
+SELECT osoba_id 
+FROM osoba o right  join zamestnanec z using(osoba_id)
+WHERE o.jmeno LIKE &#039;%a%&#039; AND o.jmeno NOT LIKE &#039;%b%&#039;
+ORDER BY osoba_id;
+
+--pomoci not in a negace podmínek z předchozího bodu
+SELECT osoba_id 
+FROM zamestnanec z
+WHERE osoba_id not in(SELECT osoba_id FROM osoba o WHERE o.jmeno NOT LIKE &#039;%a%&#039; or o.jmeno LIKE &#039;%b%&#039;)
+ORDER BY osoba_id;
+
+--pomoci průniku id ze selekce dvou nutných podmínek
+((SELECT z.osoba_id FROM zamestnanec z left  join osoba o on z.osoba_id=o.osoba_id
+WHERE o.jmeno LIKE &#039;%a%&#039;)
+INTERSECT
+(SELECT z.osoba_id 
+FROM zamestnanec z left  join osoba o on z.osoba_id=o.osoba_id
+WHERE o.jmeno NOT LIKE &#039;%b%&#039;))
+ORDER BY osoba_id;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D24">
+                        <popis_dotazu>
+                                <para>Zaměstnance s datem nástupu do prace od roku 2068.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>zamestnanec(datum_nastupu&gt;=&#039;01/01/2068&#039;)
+</relacni_algebra>
+                            <sql>SELECT  *
+FROM ZAMESTNANEC
+WHERE datum_nastupu &gt;= &#039;01/01/2068&#039;;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D17">
+                        <popis_dotazu>
+                                <para>Vložit zasilku pro nahodnou osobu(příjemce) pro odesílatele s id 32 a zaměstnance s id 4
+(datum odesílaní je &#039;2070-11-08&#039;, datum doručení je &#039;2070-11-09&#039;, hmotnost je &#039;5&#039;, id rakety je náhodné, popis není, typ zasilky je &#039;osobni_zasilky&#039;).</para>
+                        </popis_dotazu>
+                            <sql>begin;
+--ověříme si počet záznamů před insertem
+SELECT count(*) 
+FROM zasilka;
+
+--provedeme náš insert
+       INSERT into zasilka 
+                            (zasilka_id, zasilka_typ_id, prijemce_id, odesilatel_id, zamestnanec_id, pobocka_id, raketa_id, datum_doruceni, datum_odesilani, hmotnost)
+SELECT (SELECT count(*)+1 FROM zasilka), zasilka_typ_id, floor(random()*((SELECT count(*) FROM osoba)-1)+1), 32, 4, (SELECT pobocka_id FROM zamestnanec WHERE osoba_id=4),
+floor(random()*((SELECT count(*) FROM raketa)-1)+1), &#039;2070-11-09&#039;, &#039;2070-11-08&#039;, &#039;5&#039;
+FROM zasilka_typ zt 
+WHERE zt.nazev=&#039;osobni_zasilky&#039;;
+--mužeme použit round místo floor a je to stejne zaokrouhl.
+--ověříme počet řádků po vložení
+SELECT count(*) 
+FROM zasilka;
+SELECT * 
+FROM zasilka
+WHERE zasilka_id=179;
+
+--zrušíme naši transakci
+rollback;
+--zkontrolujeme, že stav je jako na začatku před transakcí
+SELECT count(*) 
+FROM zasilka;
+</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D22">
+                        <popis_dotazu>
+                                <para>Pobočky, které mají adresu mimo České republiky.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{stat(nazev=&#039;Czech Republic&#039;)![stat.stat_id=adresa.stat_id&gt;adresa}
+[adresa.adresa_id=pobocka.adresa_id&gt;pobocka
+</relacni_algebra>
+                            <sql>SELECT pobocka.*
+FROM POBOCKA 
+INNER JOIN ADRESA ON adresa.adresa_id=pobocka.adresa_id
+INNER JOIN STAT ON stat.stat_id=adresa.stat_id and stat.nazev != &#039;Czech Republic&#039;;
+
+--NEBO
+SELECT pobocka.*
+FROM POBOCKA 
+EXCEPT
+SELECT pobocka.*
+FROM POBOCKA 
+INNER JOIN ADRESA ON adresa.adresa_id=pobocka.adresa_id
+INNER JOIN STAT ON stat.stat_id=adresa.stat_id and stat.nazev = &#039;Czech Republic&#039;;
+
+</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D19">
+                        <popis_dotazu>
+                                <para>Vybrat jména a platy všech zaměstnanců. Seřadit podle jména sestupně.</para>
+                        </popis_dotazu>
+                            <sql>SELECT osoba.jmeno, zamestnanec.plat 
+FROM osoba   JOIN zamestnanec  ON osoba.osoba_id=zamestnanec.osoba_id
+ORDER BY osoba.jmeno DESC</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D25">
+                        <popis_dotazu>
+                                <para>Seznam zaměstnanců pracujících na pobočce &#039;Skalka&#039;.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>zamestnanec&lt;zamestnanec.pobocka_id=pobocka.pobocka_id]
+{pobocka(nazev=&#039;Skalka&#039;)}</relacni_algebra>
+                            <sql>SELECT zamestnanec.*
+FROM ZAMESTNANEC 
+INNER JOIN POBOCKA ON zamestnanec.pobocka_id=pobocka.pobocka_id and nazev = &#039;Skalka&#039;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D27">
+                        <popis_dotazu>
+                                <para>Vybrat všechny zásilky(id a data doručení) a všechny osoby(id a jména)
+včetně informace o tom, zdá je tato osoba zaměstnancem, který danou zásilku vytvořil.
+Vypsat i osoby, které žádnou objednávku nevytvořily.
+Tedy ve výstupu nebude chybět žádná zásilka ani osoba.
+Výstup seřadíme podle id zásilek a id osob vzestupně.</para>
+                        </popis_dotazu>
+                            <sql>SELECT zasilka.zasilka_id,
+    zasilka.datum_doruceni,
+    osoba.osoba_id,
+    osoba.jmeno
+FROM zasilka  full outer join osoba 
+    ON zasilka.zamestnanec_id=osoba.osoba_id
+ORDER BY zasilka.zasilka_id, zasilka.datum_doruceni, osoba.osoba_id , osoba.jmeno;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D23">
+                        <popis_dotazu>
+                                <para>Zobrazovat  zaměstnance  kteří jsou asistenty poboček s platem vyšším než 28 000 . </para>
+                        </popis_dotazu>
+                            <relacni_algebra>zamestnanec(pracovni_pozice=&#039;asistent pobocky&#039;)(plat&gt;&#039;28000&#039;)</relacni_algebra>
+                            <sql>SELECT  *
+FROM ZAMESTNANEC
+WHERE pracovni_pozice = &#039;asistent pobocky&#039; AND plat &gt; &#039;28000&#039;;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D26">
+                        <popis_dotazu>
+                                <para>Vypsat adresy všech poboček na planetě Zemi.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>{planeta(nazev=&#039;Earth&#039;)[planeta.planeta_id=stat.planeta_id&gt;stat}[stat.stat_id=adresa.stat_id&gt;adresa
+&lt;adresa.adresa_id=pobocka.adresa_id]pobocka
+</relacni_algebra>
+                            <sql>SELECT adresa.*
+FROM POBOCKA 
+INNER JOIN ADRESA ON adresa.adresa_id=pobocka.adresa_id
+INNER JOIN STAT ON stat.stat_id=adresa.stat_id
+INNER JOIN PLANETA ON planeta.planeta_id=stat.planeta_id and planeta.nazev = &#039;Earth&#039; ; </sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D28">
+                        <popis_dotazu>
+                                <para>Chceme vidět údaje z tabulky Planeta, ale všechny sloupce musí být pojmenovány v angličtině.</para>
+                        </popis_dotazu>
+                            <relacni_algebra>planeta[planeta_id-&gt;id_planet, nazev-&gt;name_of_planet]</relacni_algebra>
+                            <sql>SELECT  planeta_id AS id_planet,
+                nazev AS name_of_planet
+FROM PLANETA;</sql>
+                    </dotaz>
+                    <dotaz dotaz_id="D20">
+                        <popis_dotazu>
+                                <para>Vybrat všechny platby (platba_id, datum) s častkou menší než 2500 nebo větší než 32500.</para>
+                        </popis_dotazu>
+                            <sql>(SELECT platba_id, datum
+FROM platba WHERE 
+castka&lt;&#039;2500&#039;)
+UNION
+(SELECT platba_id, datum 
+FROM platba 
+WHERE castka&gt;&#039;32500&#039;)</sql>
+                    </dotaz>
+            </dotazy>
+            <pokryti_dotazu>
+                        <radek>
+                            <kategorie>A</kategorie>
+                            <odkazy>
+                                    <link url="#D1">D1</link>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D4">D4</link>
+                                    <link url="#D15">D15</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D19">D19</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D27">D27</link>
+                                    <link url="#D26">D26</link>
+                            </odkazy>
+                            <kategorie_popis>A - Pozitivní dotaz nad spojením alespoň dvou tabulek</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>AR</kategorie>
+                            <odkazy>
+                                    <link url="#D1">D1</link>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D4">D4</link>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D26">D26</link>
+                            </odkazy>
+                            <kategorie_popis>A (RA) - Pozitivní dotaz nad spojením alespoň dvou tabulek</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>B</kategorie>
+                            <odkazy>
+                                    <link url="#D22">D22</link>
+                            </odkazy>
+                            <kategorie_popis>B - Negativní dotaz nad spojením alespoň dvou tabulek</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>C</kategorie>
+                            <odkazy>
+                                    <link url="#D7">D7</link>
+                                    <link url="#D8">D8</link>
+                                    <link url="#D5">D5</link>
+                                    <link url="#D9">D9</link>
+                                    <link url="#D6">D6</link>
+                            </odkazy>
+                            <kategorie_popis>C - Vyber ty, kteří mají vztah POUZE k ...</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>D1</kategorie>
+                            <odkazy>
+                                    <link url="#D4">D4</link>
+                            </odkazy>
+                            <kategorie_popis>D1 - Vyber ty, kteří/které jsou ve vztahu se všemi - dotaz s univerzální kvantifikací</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>D2</kategorie>
+                            <odkazy>
+                                    <link url="#D11">D11</link>
+                            </odkazy>
+                            <kategorie_popis>D2 - Kontrola výsledku dotazu z kategorie D1</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F1</kategorie>
+                            <odkazy>
+                                    <link url="#D1">D1</link>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D8">D8</link>
+                                    <link url="#D5">D5</link>
+                                    <link url="#D4">D4</link>
+                                    <link url="#D9">D9</link>
+                                    <link url="#D6">D6</link>
+                                    <link url="#D15">D15</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D19">D19</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D26">D26</link>
+                            </odkazy>
+                            <kategorie_popis>F1 - JOIN ON</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F1R</kategorie>
+                            <odkazy>
+                                    <link url="#D1">D1</link>
+                                    <link url="#D2">D2</link>
+                                    <link url="#D3">D3</link>
+                                    <link url="#D8">D8</link>
+                                    <link url="#D5">D5</link>
+                                    <link url="#D4">D4</link>
+                                    <link url="#D9">D9</link>
+                                    <link url="#D6">D6</link>
+                                    <link url="#D22">D22</link>
+                                    <link url="#D25">D25</link>
+                                    <link url="#D26">D26</link>
+                            </odkazy>
+                            <kategorie_popis>F1 (RA) - JOIN ON</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F2</kategorie>
+                            <odkazy>
+                                    <link url="#D18">D18</link>
+                            </odkazy>
+                            <kategorie_popis>F2 - NATURAL JOIN|JOIN USING</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F3</kategorie>
+                            <odkazy>
+                                    <link url="#D4">D4</link>
+                                    <link url="#D12">D12</link>
+                            </odkazy>
+                            <kategorie_popis>F3 - CROSS JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F3R</kategorie>
+                            <odkazy>
+                                    <link url="#D4">D4</link>
+                            </odkazy>
+                            <kategorie_popis>F3 (RA) - CROSS JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F4</kategorie>
+                            <odkazy>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D18">D18</link>
+                            </odkazy>
+                            <kategorie_popis>F4 - LEFT|RIGHT OUTER JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>F5</kategorie>
+                            <odkazy>
+                                    <link url="#D27">D27</link>
+                            </odkazy>
+                            <kategorie_popis>F5 - FULL (OUTER) JOIN</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G1</kategorie>
+                            <odkazy>
+                                    <link url="#D4">D4</link>
+                                    <link url="#D11">D11</link>
+                                    <link url="#D12">D12</link>
+                                    <link url="#D13">D13</link>
+                                    <link url="#D14">D14</link>
+                                    <link url="#D15">D15</link>
+                                    <link url="#D18">D18</link>
+                            </odkazy>
+                            <kategorie_popis>G1 - Vnořený dotaz v klauzuli WHERE</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G1R</kategorie>
+                            <odkazy>
+                                    <link url="#D4">D4</link>
+                                    <link url="#D11">D11</link>
+                            </odkazy>
+                            <kategorie_popis>G1 (RA) - Vnořený dotaz v klauzuli WHERE</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G2</kategorie>
+                            <odkazy>
+                                    <link url="#D11">D11</link>
+                            </odkazy>
+                            <kategorie_popis>G2 - Vnořený dotaz v klauzuli FROM</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G3</kategorie>
+                            <odkazy>
+                                    <link url="#D17">D17</link>
+                            </odkazy>
+                            <kategorie_popis>G3 - Vnořený dotaz v klauzuli SELECT</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G4</kategorie>
+                            <odkazy>
+                                    <link url="#D4">D4</link>
+                                    <link url="#D12">D12</link>
+                                    <link url="#D13">D13</link>
+                            </odkazy>
+                            <kategorie_popis>G4 - Vztažený vnořený dotaz (EXISTS, NOT EXISTS)</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>G4R</kategorie>
+                            <odkazy>
+                                    <link url="#D4">D4</link>
+                            </odkazy>
+                            <kategorie_popis>G4 (RA) - Vztažený vnořený dotaz (EXISTS, NOT EXISTS)</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>H1</kategorie>
+                            <odkazy>
+                                    <link url="#D20">D20</link>
+                            </odkazy>
+                            <kategorie_popis>H1 - Množinové sjednocení - UNION</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>H2</kategorie>
+                            <odkazy>
+                                    <link url="#D7">D7</link>
+                                    <link url="#D8">D8</link>
+                                    <link url="#D5">D5</link>
+                                    <link url="#D4">D4</link>
+                                    <link url="#D11">D11</link>
+                                    <link url="#D9">D9</link>
+                                    <link url="#D6">D6</link>
+                                    <link url="#D22">D22</link>
+                            </odkazy>
+                            <kategorie_popis>H2 - Množinový rozdíl - MINUS nebo EXCEPT</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>H3</kategorie>
+                            <odkazy>
+                                    <link url="#D18">D18</link>
+                            </odkazy>
+                            <kategorie_popis>H3 - Množinový průnik - INTERSECT</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>I1</kategorie>
+                            <odkazy>
+                                    <link url="#D11">D11</link>
+                                    <link url="#D14">D14</link>
+                                    <link url="#D16">D16</link>
+                                    <link url="#D17">D17</link>
+                            </odkazy>
+                            <kategorie_popis>I1 - Agregační funkce (count|sum|min|max|avg)</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>I1R</kategorie>
+                            <odkazy>
+                                    <link url="#D11">D11</link>
+                            </odkazy>
+                            <kategorie_popis>I1 (RA) - Agregační funkce (count|sum|min|max|avg)</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>I2</kategorie>
+                            <odkazy>
+                                    <link url="#D16">D16</link>
+                            </odkazy>
+                            <kategorie_popis>I2 - Agregační funkce nad seskupenými řádky - GROUP BY (HAVING)</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>J</kategorie>
+                            <odkazy>
+                                    <link url="#D18">D18</link>
+                            </odkazy>
+                            <kategorie_popis>J - Stejný dotaz ve třech různých formulacích SQL</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>K</kategorie>
+                            <odkazy>
+                                    <link url="#D16">D16</link>
+                            </odkazy>
+                            <kategorie_popis>K - Všechny klauzule v 1 dotazu - SELECT FROM WHERE GROUP BY HAVING ORDER BY</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>L</kategorie>
+                            <odkazy>
+                                    <link url="#D12">D12</link>
+                            </odkazy>
+                            <kategorie_popis>L - VIEW</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>M</kategorie>
+                            <odkazy>
+                                    <link url="#D13">D13</link>
+                            </odkazy>
+                            <kategorie_popis>M - Dotaz nad pohledem</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>N</kategorie>
+                            <odkazy>
+                                    <link url="#D17">D17</link>
+                            </odkazy>
+                            <kategorie_popis>N - INSERT, který vloží do některé tabulky množinu řádků, které jsou vybrány dotazem z vybraných tabulek (příkaz INSERT, ve kterém je klauzule VALUES nahrazena vnořeným poddotazem.</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>O</kategorie>
+                            <odkazy>
+                                    <link url="#D15">D15</link>
+                            </odkazy>
+                            <kategorie_popis>O - UPDATE s vnořeným SELECT příkazem</kategorie_popis>
+                        </radek>
+                        <radek>
+                            <kategorie>P</kategorie>
+                            <odkazy>
+                                    <link url="#D14">D14</link>
+                            </odkazy>
+                            <kategorie_popis>P - DELETE s vnořeným SELECT příkazem</kategorie_popis>
+                        </radek>
+            </pokryti_dotazu>
+        </queries>
+        <scripts>
+            <title>Scripts</title>
+            <para>
+                <link url="./create.sql">create.sql</link>
+            </para>
+            <para>
+                <link url="./insert.sql">insert.sql</link>
+            </para>
+        </scripts>
+        <conclussions>
+            <title>Závěr</title>
+                    <para>Tato semestrální práce pro mne byla poměrně složitá. Potřeboval jsem týden abych přezkoumal všechny přednášky, proseminaře a cvičení,  a z probraných témat mi dělalo největší potíže pochopení konceptuálního schéma  a  tabulky Osoba , osoba_typ .  O to více času jsem nad touto prací stravil a věřím, že mohu říct, že se to vyplatilo. Přestože doufám v kladné ohodnocení práce, získané informace jsou pro mě důležitější než známka samotná. :)  PS:  Všechny sql dotazy kde je NATURAL JOIN jsem předělal na JOIN USING.</para>
+        </conclussions>
+        <references>
+            <title>Zdroje</title>
+                    <para>1) Stránky předmětu BI-DBS - https://courses.fit.cvut.cz</para>
+                    <para>2) Vzorová semestrální práce Test Quast - https://users.fit.cvut.cz/~hunkajir/dbs/main.xml</para>
+                    <para>3)Demo semestrálka pro práci s PostgreSQL https://users.fit.cvut.cz/~hunkajir/dbs2/main.xml</para>
+                    <para>4)  Generátor dat Mocaroo - https://www.mockaroo.com/</para>
+                    <para>5) Transformace modeller https://dbs.fit.cvut.cz/dbsdm-ddl/</para>
+                    <para>6) Fórum s návody a typy https://stackoverflow.com/ plus https://www.google.com</para>
+                    <para></para>
+                    <para></para>
+        </references>
+    </content>
+</sproject>
